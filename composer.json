@@ -1,5 +1,5 @@
 {
-    "name": "illegal/laravel-ai",
+    "name": "vigstudio/laravel-ai",
     "description": "A laravel plugin to interact with AI providers",
     "type": "library",
     "licence": "MIT",
