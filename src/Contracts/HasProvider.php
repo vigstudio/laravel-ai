@@ -1,13 +1,13 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Enums\Provider;
+use VigStudio\LaravelAI\Enums\Provider;
 
 trait HasProvider
 {
     /**
-     * @var Provider $provider - The provider
+     * @var Provider - The provider
      */
     private Provider $provider;
 
@@ -17,6 +17,7 @@ trait HasProvider
     public function withProvider(Provider $provider): self
     {
         $this->provider = $provider;
+
         return $this;
     }
 

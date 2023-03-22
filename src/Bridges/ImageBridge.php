@@ -1,24 +1,28 @@
 <?php
 
-namespace Illegal\LaravelAI\Bridges;
+namespace VigStudio\LaravelAI\Bridges;
 
-use Exception;
-use Illegal\LaravelAI\Contracts\Bridge;
-use Illegal\LaravelAI\Contracts\HasModel;
-use Illegal\LaravelAI\Contracts\HasNew;
-use Illegal\LaravelAI\Contracts\HasProvider;
-use Illegal\LaravelAi\Models\Image;
 use Illuminate\Database\Eloquent\Model;
+use VigStudio\LaravelAI\Contracts\Bridge;
+use VigStudio\LaravelAI\Contracts\HasModel;
+use VigStudio\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasProvider;
+use VigStudio\LaravelAI\Models\Image;
 
 class ImageBridge implements Bridge
 {
     use HasProvider, HasModel, HasNew;
 
     private ?string $externalId;
+
     private ?string $prompt;
+
     private ?int    $width;
+
     private ?int    $height;
+
     private ?string $url;
+
     private ?Image  $image;
 
     /**
@@ -27,6 +31,7 @@ class ImageBridge implements Bridge
     public function withExternalId(string $externalId = null): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -44,6 +49,7 @@ class ImageBridge implements Bridge
     public function withPrompt(string $prompt = null): self
     {
         $this->prompt = $prompt;
+
         return $this;
     }
 
@@ -61,6 +67,7 @@ class ImageBridge implements Bridge
     public function withWidth(int $width = null): self
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -78,6 +85,7 @@ class ImageBridge implements Bridge
     public function withHeight(int $height = null): self
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -95,6 +103,7 @@ class ImageBridge implements Bridge
     public function withUrl(string $url = null): self
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -137,9 +146,9 @@ class ImageBridge implements Bridge
     {
         return [
             'prompt' => $this->prompt,
-            'width'  => $this->width,
+            'width' => $this->width,
             'height' => $this->height,
-            'url'    => $this->url
+            'url' => $this->url,
         ];
     }
 
@@ -165,9 +174,9 @@ class ImageBridge implements Bridge
          * Populate local data
          */
         $this->prompt = $prompt;
-        $this->width  = $width;
+        $this->width = $width;
         $this->height = $height;
-        $this->url    = $response->url();
+        $this->url = $response->url();
 
         /**
          * Import into a model

@@ -1,15 +1,15 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Models\Model;
+use VigStudio\LaravelAI\Models\Model;
 
 trait HasModel
 {
     use HasProvider;
 
     /**
-     * @var Model $model The model
+     * @var Model The model
      */
     private Model $model;
 
@@ -35,6 +35,7 @@ trait HasModel
         }
 
         $this->model = $model;
+
         return $this;
     }
 

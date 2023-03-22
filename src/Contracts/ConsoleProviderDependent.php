@@ -1,8 +1,8 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Enums\Provider;
+use VigStudio\LaravelAI\Enums\Provider;
 
 /**
  * @method choice( string $string, array|string[] $choices, string $value )
@@ -24,5 +24,4 @@ trait ConsoleProviderDependent
 
         return Provider::from($provider);
     }
-
 }

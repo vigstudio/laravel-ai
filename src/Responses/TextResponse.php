@@ -1,20 +1,20 @@
 <?php
 
-namespace Illegal\LaravelAI\Responses;
+namespace VigStudio\LaravelAI\Responses;
 
-use Illegal\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasNew;
 
 class TextResponse
 {
     use HasNew;
 
     /**
-     * @var string $externalId - The external id of the text
+     * @var string - The external id of the text
      */
     private string $externalId;
 
     /**
-     * @var MessageResponse $message - The message, in the MessageResponse format
+     * @var MessageResponse - The message, in the MessageResponse format
      */
     private MessageResponse $message;
 
@@ -24,6 +24,7 @@ class TextResponse
     public function withExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -41,6 +42,7 @@ class TextResponse
     public function withMessage(MessageResponse $message): self
     {
         $this->message = $message;
+
         return $this;
     }
 

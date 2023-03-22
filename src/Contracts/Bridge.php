@@ -1,9 +1,9 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Enums\Provider;
 use Illuminate\Database\Eloquent\Model;
+use VigStudio\LaravelAI\Enums\Provider;
 
 /**
  * The bridge is a way to connect the AI provider to the application.

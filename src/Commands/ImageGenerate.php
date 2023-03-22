@@ -1,10 +1,10 @@
 <?php
 
-namespace Illegal\LaravelAI\Commands;
+namespace VigStudio\LaravelAI\Commands;
 
-use Illegal\LaravelAI\Bridges\ImageBridge;
-use Illegal\LaravelAI\Contracts\ConsoleProviderDependent;
 use Illuminate\Console\Command;
+use VigStudio\LaravelAI\Bridges\ImageBridge;
+use VigStudio\LaravelAI\Contracts\ConsoleProviderDependent;
 
 class ImageGenerate extends Command
 {
@@ -21,7 +21,7 @@ class ImageGenerate extends Command
         $prompt = $this->ask('You');
 
         $this->info(
-            'AI: ' .
+            'AI: '.
             ImageBridge::new()
                 ->withProvider($provider)
                 ->generate($prompt, 256, 256)

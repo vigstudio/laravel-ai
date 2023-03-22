@@ -1,24 +1,24 @@
 <?php
 
-namespace Illegal\LaravelAI\Bridges;
+namespace VigStudio\LaravelAI\Bridges;
 
-use Illegal\LaravelAI\Contracts\Bridge;
-use Illegal\LaravelAI\Contracts\HasModel;
-use Illegal\LaravelAI\Contracts\HasNew;
-use Illegal\LaravelAI\Contracts\HasProvider;
-use Illegal\LaravelAI\Models\Model;
+use VigStudio\LaravelAI\Contracts\Bridge;
+use VigStudio\LaravelAI\Contracts\HasModel;
+use VigStudio\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasProvider;
+use VigStudio\LaravelAI\Models\Model;
 
 final class ModelBridge implements Bridge
 {
     use HasProvider, HasModel, HasNew;
 
     /**
-     * @var string $externalId The external id of the model, returned by the provider
+     * @var string The external id of the model, returned by the provider
      */
     private string $externalId;
 
     /**
-     * @var string $name The name of the model
+     * @var string The name of the model
      */
     private string $name;
 
@@ -28,6 +28,7 @@ final class ModelBridge implements Bridge
     public function withExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -45,6 +46,7 @@ final class ModelBridge implements Bridge
     public function withName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -82,7 +84,7 @@ final class ModelBridge implements Bridge
     {
         return [
             'external_id' => $this->externalId,
-            'name'        => $this->name,
+            'name' => $this->name,
         ];
     }
 
@@ -93,11 +95,11 @@ final class ModelBridge implements Bridge
     {
         $model = Model::updateOrCreate([
             'external_id' => $this->externalId,
-            'provider'    => $this->provider
+            'provider' => $this->provider,
         ], array_merge(
             $this->toArray(),
             [
-                'provider'  => $this->provider,
+                'provider' => $this->provider,
                 'is_active' => true,
             ]
         ));

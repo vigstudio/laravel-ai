@@ -1,8 +1,8 @@
 <?php
 
-namespace Illegal\LaravelAI\Responses;
+namespace VigStudio\LaravelAI\Responses;
 
-use Illegal\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasNew;
 
 /**
  * This is the common message response to which all responses, from providers, are converted
@@ -12,12 +12,12 @@ class MessageResponse
     use HasNew;
 
     /**
-     * @var string $role - The role of the user sending the message
+     * @var string - The role of the user sending the message
      */
     private string $role;
 
     /**
-     * @var string $content - The content of the message
+     * @var string - The content of the message
      */
     private string $content;
 
@@ -27,6 +27,7 @@ class MessageResponse
     public function withRole(string $role): self
     {
         $this->role = $role;
+
         return $this;
     }
 
@@ -47,6 +48,7 @@ class MessageResponse
          * Trim the content, to remove any leading or trailing whitespace
          */
         $this->content = trim($content);
+
         return $this;
     }
 
@@ -66,7 +68,7 @@ class MessageResponse
     public function toArray(): array
     {
         return [
-            'role'    => $this->role,
+            'role' => $this->role,
             'content' => $this->content,
         ];
     }

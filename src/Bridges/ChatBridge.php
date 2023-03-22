@@ -1,31 +1,31 @@
 <?php
 
-namespace Illegal\LaravelAI\Bridges;
+namespace VigStudio\LaravelAI\Bridges;
 
 use Exception;
-use Illegal\LaravelAI\Contracts\Bridge;
-use Illegal\LaravelAI\Contracts\HasModel;
-use Illegal\LaravelAI\Contracts\HasNew;
-use Illegal\LaravelAI\Contracts\HasProvider;
-use Illegal\LaravelAI\Models\Chat;
 use Illuminate\Database\Eloquent\Model;
+use VigStudio\LaravelAI\Contracts\Bridge;
+use VigStudio\LaravelAI\Contracts\HasModel;
+use VigStudio\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasProvider;
+use VigStudio\LaravelAI\Models\Chat;
 
 final class ChatBridge implements Bridge
 {
     use HasProvider, HasModel, HasNew;
 
     /**
-     * @var string $externalId The external id of the chat, returned by the provider
+     * @var string The external id of the chat, returned by the provider
      */
     private string $externalId;
 
     /**
-     * @var array $messages The messages sent and received in the chat
+     * @var array The messages sent and received in the chat
      */
     private array $messages;
 
     /**
-     * @var Chat $chat The corresponding chat model
+     * @var Chat The corresponding chat model
      */
     private Chat $chat;
 
@@ -35,6 +35,7 @@ final class ChatBridge implements Bridge
     public function withExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -52,6 +53,7 @@ final class ChatBridge implements Bridge
     public function withMessages(array $messages): self
     {
         $this->messages = $messages;
+
         return $this;
     }
 
@@ -91,7 +93,7 @@ final class ChatBridge implements Bridge
     {
         return [
             'external_id' => $this->externalId,
-            'messages'    => $this->messages,
+            'messages' => $this->messages,
         ];
     }
 
@@ -113,8 +115,8 @@ final class ChatBridge implements Bridge
     public function send($message): string
     {
         $this->messages[] = [
-            'role'    => 'user',
-            'content' => $message
+            'role' => 'user',
+            'content' => $message,
         ];
 
         /**
@@ -127,9 +129,9 @@ final class ChatBridge implements Bridge
          */
         $this->chat = $this->chat ?? ( new Chat );
         $this->chat->forceFill([
-            'model_id'    => $this->model->id,
+            'model_id' => $this->model->id,
             'external_id' => $response->externalId(),
-            'messages'    => array_merge($this->messages, [$response->message()->toArray()])
+            'messages' => array_merge($this->messages, [$response->message()->toArray()]),
         ])->save();
 
         /**

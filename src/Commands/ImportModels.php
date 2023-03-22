@@ -1,11 +1,11 @@
 <?php
 
-namespace Illegal\LaravelAI\Commands;
+namespace VigStudio\LaravelAI\Commands;
 
-use Illegal\LaravelAI\Contracts\ConsoleProviderDependent;
-use Illegal\LaravelAI\Models\Model;
-use Illegal\LaravelAI\Bridges\ModelBridge;
 use Illuminate\Console\Command;
+use VigStudio\LaravelAI\Bridges\ModelBridge;
+use VigStudio\LaravelAI\Contracts\ConsoleProviderDependent;
+use VigStudio\LaravelAI\Models\Model;
 
 class ImportModels extends Command
 {
@@ -26,7 +26,7 @@ class ImportModels extends Command
         $provider = $this->askForProvider();
 
         Model::whereProvider($provider->value)->update([
-            'is_active' => false
+            'is_active' => false,
         ]);
 
         $this->withProgressBar($provider->getConnector()->listModels(), function (ModelBridge $modelBridge) {

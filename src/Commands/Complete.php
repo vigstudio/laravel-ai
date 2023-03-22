@@ -1,10 +1,10 @@
 <?php
 
-namespace Illegal\LaravelAI\Commands;
+namespace VigStudio\LaravelAI\Commands;
 
-use Illegal\LaravelAI\Bridges\CompletionBridge;
-use Illegal\LaravelAI\Contracts\ConsoleProviderDependent;
 use Illuminate\Console\Command;
+use VigStudio\LaravelAI\Bridges\CompletionBridge;
+use VigStudio\LaravelAI\Contracts\ConsoleProviderDependent;
 
 class Complete extends Command
 {
@@ -21,13 +21,13 @@ class Complete extends Command
     {
         $provider = $this->askForProvider();
 
-        while(1) {
+        while (1) {
             $message = $this->ask('You');
             if ($message === 'exit') {
                 break;
             }
             $this->info(
-                'AI: ' .
+                'AI: '.
                 CompletionBridge::new()
                     ->withProvider($provider)
                     ->withModel('text-davinci-003')

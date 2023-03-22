@@ -23,21 +23,19 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.19",
+        "laravel/framework": "^9.19|^10.0",
         "openai-php/client": "^0.3.5"
     },
-    "require-dev": {
-
-    },
+    "require-dev": {},
     "autoload": {
         "psr-4": {
-            "Illegal\\LaravelAi\\": "src/"
+            "VigStudio\\LaravelAI\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Illegal\\LaravelAi\\ServiceProvider"
+                "VigStudio\\LaravelAI\\ServiceProvider"
             ]
         }
     },

@@ -1,15 +1,15 @@
 <?php
 
-namespace Illegal\LaravelAI;
+namespace VigStudio\LaravelAI;
 
-use Illegal\LaravelAi\Commands\Chat;
-use Illegal\LaravelAi\Commands\Complete;
-use Illegal\LaravelAi\Commands\ImageGenerate;
-use Illegal\LaravelAI\Commands\ImportModels;
-use Illegal\LaravelAI\Connectors\OpenAIConnector;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use OpenAI;
+use VigStudio\LaravelAI\Commands\Chat;
+use VigStudio\LaravelAI\Commands\Complete;
+use VigStudio\LaravelAI\Commands\ImageGenerate;
+use VigStudio\LaravelAI\Commands\ImportModels;
+use VigStudio\LaravelAI\Connectors\OpenAIConnector;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -30,7 +30,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function loadMigrations(): void
     {
         $this->loadMigrationsFrom([
-            __DIR__ . '/../database/migrations/'
+            __DIR__.'/../database/migrations/',
         ]);
     }
 
@@ -52,7 +52,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function mergeConfigurations(): void
     {
-        $this->mergeConfigFrom(__DIR__ . "/../config/laravel-ai.php", "laravel-ai");
+        $this->mergeConfigFrom(__DIR__.'/../config/laravel-ai.php', 'laravel-ai');
     }
 
     /**

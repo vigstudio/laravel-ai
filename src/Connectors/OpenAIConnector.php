@@ -1,16 +1,16 @@
 <?php
 
-namespace Illegal\LaravelAI\Connectors;
+namespace VigStudio\LaravelAI\Connectors;
 
 use Exception;
-use Illegal\LaravelAI\Contracts\Connector;
-use Illegal\LaravelAI\Enums\Provider;
-use Illegal\LaravelAI\Bridges\ModelBridge;
-use Illegal\LaravelAI\Responses\ImageResponse;
-use Illegal\LaravelAI\Responses\MessageResponse;
-use Illegal\LaravelAI\Responses\TextResponse;
 use Illuminate\Support\Collection;
 use OpenAI\Client;
+use VigStudio\LaravelAI\Bridges\ModelBridge;
+use VigStudio\LaravelAI\Contracts\Connector;
+use VigStudio\LaravelAI\Enums\Provider;
+use VigStudio\LaravelAI\Responses\ImageResponse;
+use VigStudio\LaravelAI\Responses\MessageResponse;
+use VigStudio\LaravelAI\Responses\TextResponse;
 
 /**
  * The Connector for the OpenAI provider
@@ -18,22 +18,22 @@ use OpenAI\Client;
 class OpenAIConnector implements Connector
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public const NAME = 'openai';
 
     /**
-     * @var int $defaultMaxTokens - The default max tokens for the OpenAI API
+     * @var int - The default max tokens for the OpenAI API
      */
     private int $defaultMaxTokens = 5;
 
     /**
-     * @var float $defaultTemperature - The default temperature for the OpenAI API
+     * @var float - The default temperature for the OpenAI API
      */
     private float $defaultTemperature = 0;
 
     /**
-     * @param Client $client - The OpenAI client
+     * @param  Client  $client - The OpenAI client
      */
     public function __construct(protected Client $client)
     {
@@ -45,6 +45,7 @@ class OpenAIConnector implements Connector
     public function withDefaultMaxTokens(int $maxTokens): self
     {
         $this->defaultMaxTokens = $maxTokens;
+
         return $this;
     }
 
@@ -54,11 +55,12 @@ class OpenAIConnector implements Connector
     public function withDefaultTemperature(float $temperature): self
     {
         $this->defaultTemperature = $temperature;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function listModels(): Collection
     {
@@ -70,15 +72,16 @@ class OpenAIConnector implements Connector
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws Exception
      */
     public function complete(string $model, string $prompt, int $maxTokens = null, float $temperature = null): TextResponse
     {
         $response = $this->client->completions()->create([
-            'model'       => $model,
-            'prompt'      => $prompt,
-            'max_tokens'  => $maxTokens ?? $this->defaultMaxTokens,
+            'model' => $model,
+            'prompt' => $prompt,
+            'max_tokens' => $maxTokens ?? $this->defaultMaxTokens,
             'temperature' => $temperature ?? $this->defaultTemperature,
         ]);
 
@@ -94,21 +97,22 @@ class OpenAIConnector implements Connector
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws Exception
      */
     public function chat(string $model, array|string $messages): TextResponse
     {
         $messages = is_array($messages) ? $messages : [
             [
-                'role'    => 'user',
-                'content' => $messages
-            ]
+                'role' => 'user',
+                'content' => $messages,
+            ],
         ];
 
         $chat = $this->client->chat()->create([
-            'model'    => $model,
-            'messages' => $messages
+            'model' => $model,
+            'messages' => $messages,
         ]);
 
         $response = TextResponse::new()->withExternalId($chat->id);
@@ -123,7 +127,8 @@ class OpenAIConnector implements Connector
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws Exception
      */
     public function imageGenerate(string $prompt, int $width, int $height): ImageResponse
@@ -132,7 +137,7 @@ class OpenAIConnector implements Connector
             'prompt' => $prompt,
             'n' => 1,
             'size' => sprintf('%dx%d', $width, $height),
-            'response_format' => 'url'
+            'response_format' => 'url',
         ]);
 
         $url = null;

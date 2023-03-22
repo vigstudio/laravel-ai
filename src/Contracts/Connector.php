@@ -1,10 +1,10 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Responses\ImageResponse;
-use Illegal\LaravelAI\Responses\TextResponse;
 use Illuminate\Support\Collection;
+use VigStudio\LaravelAI\Responses\ImageResponse;
+use VigStudio\LaravelAI\Responses\TextResponse;
 
 interface Connector
 {

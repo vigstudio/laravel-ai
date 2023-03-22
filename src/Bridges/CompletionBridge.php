@@ -1,36 +1,36 @@
 <?php
 
-namespace Illegal\LaravelAI\Bridges;
+namespace VigStudio\LaravelAI\Bridges;
 
 use Exception;
-use Illegal\LaravelAI\Contracts\Bridge;
-use Illegal\LaravelAI\Contracts\HasModel;
-use Illegal\LaravelAI\Contracts\HasNew;
-use Illegal\LaravelAI\Contracts\HasProvider;
-use Illegal\LaravelAi\Models\Completion;
 use Illuminate\Database\Eloquent\Model;
+use VigStudio\LaravelAI\Contracts\Bridge;
+use VigStudio\LaravelAI\Contracts\HasModel;
+use VigStudio\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasProvider;
+use VigStudio\LaravelAI\Models\Completion;
 
 class CompletionBridge implements Bridge
 {
     use HasProvider, HasModel, HasNew;
 
     /**
-     * @var string $externalId The external id of the completion, returned by the provider
+     * @var string The external id of the completion, returned by the provider
      */
     private string $externalId;
 
     /**
-     * @var string $prompt The prompt of the completion, provided by the user
+     * @var string The prompt of the completion, provided by the user
      */
     private string $prompt;
 
     /**
-     * @var string $answer The answer to the prompt, returned by the provider
+     * @var string The answer to the prompt, returned by the provider
      */
     private string $answer;
 
     /**
-     * @var Completion $completion The corresponding completion model
+     * @var Completion The corresponding completion model
      */
     private Completion $completion;
 
@@ -40,6 +40,7 @@ class CompletionBridge implements Bridge
     public function withExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -57,6 +58,7 @@ class CompletionBridge implements Bridge
     public function withPrompt(string $prompt): self
     {
         $this->prompt = $prompt;
+
         return $this;
     }
 
@@ -74,6 +76,7 @@ class CompletionBridge implements Bridge
     public function withAnswer(string $answer): self
     {
         $this->answer = $answer;
+
         return $this;
     }
 
@@ -134,10 +137,10 @@ class CompletionBridge implements Bridge
 
         $this->completion = $this->completion ?? ( new Completion );
         $this->completion->forceFill([
-            'model_id'    => $this->model->id,
+            'model_id' => $this->model->id,
             'external_id' => $response->externalId(),
-            'prompt'      => $text,
-            'answer'      => $response->message()->content(),
+            'prompt' => $text,
+            'answer' => $response->message()->content(),
         ])->save();
 
         $this->withCompletion($this->completion);

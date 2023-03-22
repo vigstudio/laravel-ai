@@ -1,11 +1,11 @@
 <?php
 
-namespace Illegal\LaravelAI\Commands;
+namespace VigStudio\LaravelAI\Commands;
 
 use Exception;
-use Illegal\LaravelAI\Bridges\ChatBridge;
-use Illegal\LaravelAI\Contracts\ConsoleProviderDependent;
 use Illuminate\Console\Command;
+use VigStudio\LaravelAI\Bridges\ChatBridge;
+use VigStudio\LaravelAI\Contracts\ConsoleProviderDependent;
 
 class Chat extends Command
 {
@@ -24,12 +24,12 @@ class Chat extends Command
 
         $chat = ChatBridge::new()->withProvider($provider)->withModel('gpt-3.5-turbo');
 
-        while(1) {
+        while (1) {
             $message = $this->ask('You');
             if ($message === 'exit') {
                 break;
             }
-            $this->info('AI: ' . $chat->send($message));
+            $this->info('AI: '.$chat->send($message));
         }
     }
 }

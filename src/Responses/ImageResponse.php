@@ -1,25 +1,25 @@
 <?php
 
-namespace Illegal\LaravelAI\Responses;
+namespace VigStudio\LaravelAI\Responses;
 
-use Illegal\LaravelAI\Contracts\HasNew;
+use VigStudio\LaravelAI\Contracts\HasNew;
 
 class ImageResponse
 {
     use HasNew;
 
     /**
-     * @var string $createdAt - The date and time the image was created
+     * @var string - The date and time the image was created
      */
     private string $createdAt;
 
     /**
-     * @var string $url - The url of the image
+     * @var string - The url of the image
      */
     private string $url;
 
     /**
-     * @var string $b64Json - The base64 encoded json string
+     * @var string - The base64 encoded json string
      */
     private string $b64Json;
 
@@ -29,6 +29,7 @@ class ImageResponse
     public function withCreatedAt(string $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -46,6 +47,7 @@ class ImageResponse
     public function withUrl(string $url): self
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -63,6 +65,7 @@ class ImageResponse
     public function withB64Json(string $b64Json): self
     {
         $this->b64Json = $b64Json;
+
         return $this;
     }
 
