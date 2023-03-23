@@ -13,17 +13,35 @@ class ImageBridge implements Bridge
 {
     use HasProvider, HasModel, HasNew;
 
+    /**
+     * @var string|null The external id of the image, returned by the provider
+     */
     private ?string $externalId;
 
+    /**
+     * @var string|null The prompt of the image, provided by the user
+     */
     private ?string $prompt;
 
-    private ?int    $width;
+    /**
+     * @var int|null The width of the image, provided by the user
+     */
+    private ?int $width;
 
-    private ?int    $height;
+    /**
+     * @var int|null The height of the image, provided by the user
+     */
+    private ?int $height;
 
+    /**
+     * @var string|null The url of the image, returned by the provider
+     */
     private ?string $url;
 
-    private ?Image  $image;
+    /**
+     * @var Image|null The corresponding image model
+     */
+    private ?Image $image;
 
     /**
      * Setter for the external id
@@ -122,11 +140,11 @@ class ImageBridge implements Bridge
     {
         $this->image = $image;
 
-        $this->withExternalId($image->external_id);
-        $this->withPrompt($image->prompt);
-        $this->withWidth($image->width);
-        $this->withHeight($image->height);
-        $this->withUrl($image->url);
+        $this->withExternalId($image->external_id)
+            ->withPrompt($image->prompt)
+            ->withWidth($image->width)
+            ->withHeight($image->height)
+            ->withUrl($image->url);
 
         return $this;
     }
@@ -168,6 +186,9 @@ class ImageBridge implements Bridge
      */
     public function generate(string $prompt, int $width, int $height): string
     {
+        /**
+         * Get the response from the provider, in the ImageResponse format
+         */
         $response = $this->provider()->getConnector()->imageGenerate($prompt, $width, $height);
 
         /**
@@ -183,6 +204,9 @@ class ImageBridge implements Bridge
          */
         $this->import();
 
+        /**
+         * Return the url
+         */
         return $this->url;
     }
 }
