@@ -2,8 +2,8 @@
 
 namespace VigStudio\LaravelAI\Models;
 
-use Illegal\LaravelAI\Contracts\BelongsToModel;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use VigStudio\LaravelAI\Contracts\BelongsToModel;
 
 class Chat extends EloquentModel
 {
