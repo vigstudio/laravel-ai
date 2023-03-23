@@ -1,9 +1,9 @@
 <?php
 
-namespace Illegal\LaravelAI\Contracts;
+namespace VigStudio\LaravelAI\Contracts;
 
-use Illegal\LaravelAI\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use VigStudio\LaravelAI\Models\Model;
 
 /**
  * This trait should be used by Eloquent models
