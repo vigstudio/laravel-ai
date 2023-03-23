@@ -13,7 +13,7 @@ enum Provider: string
     /**
      * The OpenAI provider. This is the only one supported at the moment.
      */
-    case OpenAI = 'openai';
+    case OpenAI = OpenAIConnector::NAME;
 
     /**
      * This method returns the connector for the provider
