@@ -161,4 +161,28 @@ class CompletionBridge implements Bridge
          */
         return $response->message()->content();
     }
+
+    public function stream(string $text): string
+    {
+        /**
+         * Get the response from the provider, in the TextResponse format
+         */
+        $response = $this->provider()->getConnector()->completeStream($this->model->external_id, $text);
+        /**
+         * Populate local data
+         */
+        $this->externalId = $response->externalId();
+        $this->prompt = $text;
+        $this->answer = $response->message()->content();
+
+        /**
+         * Import into a model
+         */
+        $this->import();
+
+        /**
+         * Return the content of the response
+         */
+        return $response->message()->content();
+    }
 }

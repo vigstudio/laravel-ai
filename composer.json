@@ -27,7 +27,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^8.1",
-        "orhanerday/open-ai": "^4.7.1"
+        "openai-php/client": "^0.4.1"
     },
     "require-dev": {},
     "autoload": {

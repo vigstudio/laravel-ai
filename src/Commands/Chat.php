@@ -11,7 +11,7 @@ class Chat extends Command
 {
     use ConsoleProviderDependent;
 
-    protected $signature = 'ai:chat';
+    protected $signature = 'ai:chat {--stream}';
 
     protected $description = 'Chat with AI';
 
@@ -29,7 +29,15 @@ class Chat extends Command
             if ($message === 'exit') {
                 break;
             }
-            $this->info('AI: '.$chat->send($message));
+
+            if ($this->option('stream')) {
+                $this->newLine();
+                $this->info('AI: ');
+                $chat->sendStream($message);
+                $this->newLine();
+            } else {
+                $this->info('AI: '.$chat->send($message));
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ class Complete extends Command
 {
     use ConsoleProviderDependent;
 
-    protected $signature = 'ai:complete';
+    protected $signature = 'ai:complete {--stream}';
 
     protected $description = 'Use the AI to complete your prompt';
 
@@ -26,13 +26,20 @@ class Complete extends Command
             if ($message === 'exit') {
                 break;
             }
-            $this->info(
-                'AI: '.
-                CompletionBridge::new()
-                    ->withProvider($provider)
-                    ->withModel('text-davinci-003')
-                    ->complete($message)
-            );
+
+            $completion = CompletionBridge::new()
+                ->withProvider($provider)
+                ->withModel('text-davinci-003');
+
+            if ($this->option('stream')) {
+                $this->newLine();
+                $this->info('AI: ');
+                $result = $completion->stream($message);
+                $this->newLine();
+            } else {
+                $result = $completion->complete($message);
+                $this->info('AI: '.$result);
+            }
         }
     }
 }
