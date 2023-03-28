@@ -106,14 +106,16 @@ class OpenAIConnector implements Connector
 
         $contents = '';
         $result = [];
+        $id = '';
         foreach ($stream as $response) {
+            $id = $response->id;
             echo $response->choices[0]->text;
             $contents .= $response->choices[0]->text;
         }
 
         $result[] = $contents;
 
-        return TextResponse::new()->withExternalId($response->id)->withMessage(
+        return TextResponse::new()->withExternalId($id)->withMessage(
             MessageResponse::new()->withContent(implode("\n--\n", $result))->withRole('assistant')
         );
     }
@@ -163,10 +165,13 @@ class OpenAIConnector implements Connector
         ]);
 
         $content = [
+            'id' => '',
             'role' => '',
             'message' => '',
         ];
         foreach ($stream as $chat) {
+            $content['id'] = $chat->id;
+
             $data = $chat->choices[0]->toArray();
             if (! empty($data['delta']['role'])) {
                 $content['role'] = $data['delta']['role'];
@@ -176,7 +181,7 @@ class OpenAIConnector implements Connector
             }
         }
 
-        $response = TextResponse::new()->withExternalId($chat->id);
+        $response = TextResponse::new()->withExternalId($content['id']);
 
         $response->withMessage(
             MessageResponse::new()->withContent($content['message'])->withRole($content['role'])
