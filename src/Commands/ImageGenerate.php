@@ -24,7 +24,7 @@ class ImageGenerate extends Command
             'AI: '.
             ImageBridge::new()
                 ->withProvider($provider)
-                ->generate($prompt, 256, 256)
+                ->generate($prompt, 1024, 1024)
         );
     }
 }

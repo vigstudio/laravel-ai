@@ -163,6 +163,7 @@ class ImageBridge implements Bridge
     public function toArray(): array
     {
         return [
+            'model_id' => 1,
             'prompt' => $this->prompt,
             'width' => $this->width,
             'height' => $this->height,

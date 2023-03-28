@@ -4,7 +4,7 @@ namespace VigStudio\LaravelAI;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use OpenAI;
+use Orhanerday\OpenAi\OpenAi;
 use VigStudio\LaravelAI\Commands\Chat;
 use VigStudio\LaravelAI\Commands\Complete;
 use VigStudio\LaravelAI\Commands\ImageGenerate;
@@ -63,14 +63,14 @@ class ServiceProvider extends IlluminateServiceProvider
         /**
          * The OpenAI client
          */
-        $this->app->singleton(OpenAI\Client::class, function () {
-            return OpenAI::client(config('laravel-ai.openai.api_key'));
+        $this->app->singleton(OpenAi::class, function () {
+            return new OpenAi(config('laravel-ai.openai.api_key'));
         });
         /**
          * The OpenAI connector
          */
         $this->app->singleton(OpenAIConnector::class, function (Application $app) {
-            return ( new OpenAIConnector($app->make(OpenAI\Client::class)) )
+            return ( new OpenAIConnector($app->make(OpenAi::class)) )
                 ->withDefaultMaxTokens(config('laravel-ai.openai.default_max_tokens'))
                 ->withDefaultTemperature(config('laravel-ai.openai.default_temperature'));
         });
