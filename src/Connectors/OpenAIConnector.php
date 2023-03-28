@@ -4,7 +4,7 @@ namespace VigStudio\LaravelAI\Connectors;
 
 use Exception;
 use Illuminate\Support\Collection;
-use OpenAI\Client;
+use Orhanerday\OpenAi\OpenAi;
 use VigStudio\LaravelAI\Bridges\ModelBridge;
 use VigStudio\LaravelAI\Contracts\Connector;
 use VigStudio\LaravelAI\Enums\Provider;
@@ -33,9 +33,9 @@ class OpenAIConnector implements Connector
     private float $defaultTemperature = 0;
 
     /**
-     * @param  Client  $client - The OpenAI client
+     * @param  OpenAi  $client - The OpenAI client
      */
-    public function __construct(protected Client $client)
+    public function __construct(protected OpenAi $client)
     {
     }
 
@@ -64,7 +64,9 @@ class OpenAIConnector implements Connector
      */
     public function listModels(): Collection
     {
-        return Collection::make($this->client->models()->list()->data)->map(function ($model) {
+        $data = json_decode($this->client->listModels())->data;
+
+        return Collection::make($data)->map(function ($model) {
             return ModelBridge::new()->withProvider(Provider::OpenAI)
                 ->withName($model->id ?? '')
                 ->withExternalId($model->id ?? '');
@@ -78,12 +80,14 @@ class OpenAIConnector implements Connector
      */
     public function complete(string $model, string $prompt, int $maxTokens = null, float $temperature = null): TextResponse
     {
-        $response = $this->client->completions()->create([
+        $response = $this->client->completion([
             'model' => $model,
             'prompt' => $prompt,
             'max_tokens' => $maxTokens ?? $this->defaultMaxTokens,
             'temperature' => $temperature ?? $this->defaultTemperature,
         ]);
+
+        $response = json_decode($response);
 
         $contents = [];
 
@@ -98,20 +102,27 @@ class OpenAIConnector implements Connector
 
     public function completeStream(string $model, string $prompt, int $maxTokens = null, float $temperature = null): TextResponse
     {
-        $stream = $this->client->completions()->createStreamed([
-            'model' => $model,
-            'prompt' => $prompt,
-            'max_tokens' => 2024,
-        ]);
-
         $contents = '';
         $result = [];
         $id = '';
-        foreach ($stream as $response) {
-            $id = $response->id;
-            echo $response->choices[0]->text;
-            $contents .= $response->choices[0]->text;
-        }
+        $stream = $this->client->completion([
+            'model' => $model,
+            'prompt' => $prompt,
+            'max_tokens' => 3000,
+            'stream' => true,
+        ], function ($curl_info, $data) use (&$contents, &$id) {
+            $clean = str_replace('data: ', '', $data);
+            $arr = json_decode($clean, true);
+
+            if ($data != "data: [DONE]\n\n" and isset($arr['choices'][0]['text'])) {
+                echo $arr['choices'][0]['text'];
+
+                $id = $arr['id'];
+                $contents .= $arr['choices'][0]['text'];
+            }
+
+            return strlen($data);
+        });
 
         $result[] = $contents;
 
@@ -134,10 +145,12 @@ class OpenAIConnector implements Connector
             ],
         ];
 
-        $chat = $this->client->chat()->create([
+        $chat = $this->client->chat([
             'model' => $model,
             'messages' => $messages,
         ]);
+
+        $chat = json_decode($chat);
 
         $response = TextResponse::new()->withExternalId($chat->id);
 
@@ -150,46 +163,6 @@ class OpenAIConnector implements Connector
         return $response;
     }
 
-    public function chatStream(string $model, array|string $messages): TextResponse
-    {
-        $messages = is_array($messages) ? $messages : [
-            [
-                'role' => 'user',
-                'content' => $messages,
-            ],
-        ];
-
-        $stream = $this->client->chat()->createStreamed([
-            'model' => $model,
-            'messages' => $messages,
-        ]);
-
-        $content = [
-            'id' => '',
-            'role' => '',
-            'message' => '',
-        ];
-        foreach ($stream as $chat) {
-            $content['id'] = $chat->id;
-
-            $data = $chat->choices[0]->toArray();
-            if (! empty($data['delta']['role'])) {
-                $content['role'] = $data['delta']['role'];
-            } elseif (! empty($data['delta']['content'])) {
-                $content['message'] .= $data['delta']['content'];
-                echo $data['delta']['content'];
-            }
-        }
-
-        $response = TextResponse::new()->withExternalId($content['id']);
-
-        $response->withMessage(
-            MessageResponse::new()->withContent($content['message'])->withRole($content['role'])
-        );
-
-        return $response;
-    }
-
     /**
      * {@inheritDoc}
      *
@@ -197,7 +170,7 @@ class OpenAIConnector implements Connector
      */
     public function imageGenerate(string $prompt, int $width, int $height): ImageResponse
     {
-        $response = $this->client->images()->create([
+        $response = $this->client->image([
             'prompt' => $prompt,
             'n' => 1,
             'size' => sprintf('%dx%d', $width, $height),
@@ -205,7 +178,7 @@ class OpenAIConnector implements Connector
         ]);
 
         $url = null;
-
+        $response = json_decode($response);
         foreach ($response->data as $data) {
             $url = $data->url;
             // $data->b64_json; // null

@@ -143,36 +143,4 @@ final class ChatBridge implements Bridge
          */
         return $response->message()->content();
     }
-
-    public function sendStream($message)
-    {
-        /**
-         * Append the message to the messages array
-         */
-        $this->messages[] = [
-            'role' => 'user',
-            'content' => $message,
-        ];
-
-        /**
-         * Get the response from the provider, in the TextResponse format
-         */
-        $response = $this->provider->getConnector()->chatStream($this->model->external_id, $this->messages);
-
-        /**
-         * Populate local data
-         */
-        $this->externalId = $response->externalId();
-        $this->messages = array_merge($this->messages, [$response->message()->toArray()]);
-
-        /**
-         * Import into a model
-         */
-        $this->import();
-
-        /**
-         * Return the content of the response
-         */
-        return $response->message()->content();
-    }
 }
