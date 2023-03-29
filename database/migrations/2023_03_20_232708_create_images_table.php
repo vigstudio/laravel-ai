@@ -12,10 +12,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('model_id');
             $table->string('external_id')->nullable();
-            $table->string('prompt');
+            $table->longText('prompt');
             $table->integer('width');
             $table->integer('height');
-            $table->text('url')->nullable();
+            $table->longText('url')->nullable();
             $table->timestamps();
 
             $table->foreign('model_id')

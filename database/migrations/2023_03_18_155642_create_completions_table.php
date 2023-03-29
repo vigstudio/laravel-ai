@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('model_id');
             $table->string('external_id')->nullable();
-            $table->string('prompt');
+            $table->longText('prompt');
             $table->longText('answer');
             $table->timestamps();
 
