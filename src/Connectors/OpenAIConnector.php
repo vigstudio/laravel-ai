@@ -115,8 +115,6 @@ class OpenAIConnector implements Connector
             $arr = json_decode($clean, true);
 
             if ($data != "data: [DONE]\n\n" and isset($arr['choices'][0]['text'])) {
-                echo $arr['choices'][0]['text'];
-
                 $id = $arr['id'];
                 $contents .= $arr['choices'][0]['text'];
             }
