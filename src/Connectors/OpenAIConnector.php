@@ -100,6 +100,11 @@ class OpenAIConnector implements Connector
         );
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws Exception
+     */
     public function completeStream(string $model, string $prompt, int $maxTokens = null, float $temperature = null): TextResponse
     {
         $contents = '';
@@ -157,6 +162,58 @@ class OpenAIConnector implements Connector
                 MessageResponse::new()->withContent($choice->message->content)->withRole($choice->message->role)
             );
         }
+
+        return $response;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws Exception
+     */
+    public function chatStream(string $model, array|string $messages): TextResponse
+    {
+        $messages = is_array($messages) ? $messages : [
+            [
+                'role' => 'user',
+                'content' => $messages,
+            ],
+        ];
+
+        $content = '';
+        $role = 'assistant';
+        $id = '';
+        $chat = $this->client->chat([
+            'model' => $model,
+            'messages' => $messages,
+            'stream' => true,
+        ], function ($curl_info, $data) use (&$content, &$role, &$id) {
+            $jsonStrings = explode("\n\n", $data);
+            foreach ($jsonStrings as $string) {
+                $clean = str_replace('data: ', '', $string);
+                $arr = json_decode($clean, true);
+
+                if (! empty($arr['choices'][0]['delta']['role'])) {
+                    $role = $arr['choices'][0]['delta']['role'];
+                }
+
+                if (! empty($arr['id'])) {
+                    $id = $arr['id'];
+                }
+
+                if (! empty($arr['choices'][0]['delta']['content'])) {
+                    $content .= $arr['choices'][0]['delta']['content'];
+                }
+            }
+
+            return strlen($data);
+        });
+
+        $response = TextResponse::new()->withExternalId($id);
+
+        $response->withMessage(
+            MessageResponse::new()->withContent($content)->withRole($role)
+        );
 
         return $response;
     }
