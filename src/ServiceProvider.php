@@ -55,8 +55,7 @@ class ServiceProvider extends IlluminateServiceProvider
         // Override OpenAI config with our config, but keep the original organization
         $openaiConfig = config('openai');
         $openaiConfig['api_key'] = config('laravel-ai.openai.api_key');
-        $openaiConfig['default_max_tokens'] = config('laravel-ai.openai.default_max_tokens');
-        $openaiConfig['default_temperature'] = config('laravel-ai.openai.default_temperature');
+        $openaiConfig['organization'] = config('laravel-ai.openai.organization');
         $this->app['config']->set('openai', $openaiConfig);
     }
 

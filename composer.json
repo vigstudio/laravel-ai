@@ -39,7 +39,10 @@
         "laravel": {
             "providers": [
                 "VigStudio\\LaravelAI\\ServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "OpenAI": "OpenAI\\Laravel\\Facades\\OpenAI"
+            }
         }
     },
     "prefer-stable": true
