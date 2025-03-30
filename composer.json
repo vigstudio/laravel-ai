@@ -27,7 +27,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^8.1",
-        "openai-php/laravel": "^0.11.0"
+        "vigstudio/laravel-openai-client": "^0.0.1"
     },
     "require-dev": {},
     "autoload": {
